@@ -1,0 +1,121 @@
+<div class="h-14 border-b-2 flex fixed w-full bg-white z-40">
+  <header class="flex items-center container mx-auto max-w-full md:w-11/12 2xl:w-6/12">
+    <%= live_redirect to: Routes.page_path(@socket, :index) do %>
+      <h1 class="text-2xl font-bold italic">#Zaryn</h1>
+    <% end %>
+    <div x-data="{open: false, inputText: null}" class="w-2/5 flex justify-end relative">
+      <form id="search-users-form" phx-change="search_users" phx-target="<%= @myself %>">
+        <input
+          phx-debounce="800"
+          x-model="inputText"
+          x-on:input="[(inputText.length != 0) ? open = true : open = false]"
+          name="q"
+          type="search"
+          placeholder="Search"
+          autocomplete="off"
+          class="h-7 bg-gray-50 shadow-sm border-gray-300 focus:ring-gray-300 focus:ring-opacity-50 focus:border-gray-400  px-0.5 rounded-sm">
+      </form>
+
+      <ul
+      x-show="open"
+      @click.away="open = false"
+      class="<%= @overflow_y_scroll_ul %> absolute top-10 -right-24 w-96 shadow-md h-96 bg-gray-50">
+
+        <%= for user <- @searched_users do %>
+          <%= live_redirect to: Routes.user_profile_path(@socket, :index, user.username) do %>
+            <li class="flex items-center px-4 py-3 hover:bg-gray-100">
+              <%= img_tag Avatar.get_thumb(user.avatar_url), class: "w-10 h-10 rounded-full object-cover object-center" %>
+              <div class="ml-3">
+                <h2 class="truncate font-bold text-sm text-gray-500"><%= user.username %></h2>
+                <h3 class="truncate text-sm text-gray-500"><%= user.full_name %></h3>
+              </div>
+            </li>
+          <% end %>
+        <% end %>
+
+        <%= if @while_searching_users? do %>
+          <li class="flex justify-center items-center h-full">
+            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          </li>
+        <% end %>
+
+        <%= if @users_not_found? do %>
+          <li class="text-sm text-gray-400 flex justify-center items-center h-full">No results found.</li>
+        <% end %>
+      </ul>
+    </div>
+    <nav class="w-3/5 relative">
+      <ul x-data="{open: false}" class="flex justify-end">
+        <%= if @current_user do %>
+          <li class="w-7 h-7 text-gray-600">
+            <%= live_redirect to: Routes.page_path(@socket, :index) do %>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+              </svg>
+            <% end %>
+          </li>
+          <li class="w-7 h-7 ml-6 text-gray-600">
+            <%= live_redirect to: Routes.live_path(@socket, ZarynWeb.PostLive.New) do %>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            <% end %>
+          </li>
+          <li class="w-7 h-7 ml-6 text-gray-600">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+          </li>
+          <li class="w-7 h-7 ml-6 text-gray-600">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+            </svg>
+          </li>
+          <li class="w-7 h-7 ml-6 text-gray-600">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+            </svg>
+          </li>
+          <li
+            @click="open = true"
+            class="w-7 h-7 ml-6 shadow-md rounded-full overflow-hidden cursor-pointer"
+          >
+            <%= img_tag Zaryn.Uploaders.Avatar.get_thumb(@current_user.avatar_url),
+            class: "w-full h-full object-cover object-center" %>
+          </li>
+          <ul class="absolute top-14 w-56 bg-white shadow-md text-sm -right-8"
+              x-show="open"
+              @click.away="open = false"
+              x-transition:enter="transition ease-out duration-200"
+              x-transition:enter-start="opacity-0 transform scale-90"
+              x-transition:enter-end="opacity-100 transform scale-100"
+              x-transition:leave="transition ease-in duration-200"
+              x-transition:leave-start="opacity-100 transform scale-100"
+              x-transition:leave-end="opacity-0 transform scale-90"
+            >
+              <%= live_redirect to: Routes.user_profile_path(@socket, :index, @current_user.username) do %>
+                <li class="py-2 px-4 hover:bg-gray-50">Profile</li>
+              <% end %>
+              <li class="py-2 px-4 hover:bg-gray-50">Saved</li>
+              <%= live_redirect to: Routes.live_path(@socket, ZarynWeb.UserLive.Settings) do %>
+                <li class="py-2 px-4 hover:bg-gray-50">Settings</li>
+              <% end %>
+              <%= link to: Routes.user_session_path(@socket, :delete), method: :delete do %>
+                <li class="border-t-2 py-2 px-4 hover:bg-gray-50">Log Out</li>
+              <% end %>
+            </ul>
+        <% else %>
+          <li>
+            <%= link "Log In", to: Routes.user_session_path(@socket, :new), class: "w-24 py-1 px-3 border-none shadow rounded text-gray-50 hover:bg-light-blue-600 bg-light-blue-500 font-semibold" %>
+          </li>
+          <li>
+            <%= link "Sign Up", to: Routes.user_registration_path(@socket, :new), class: "w-24 py-1 px-3 border-none text-light-blue-500 hover:text-light-blue-600 font-semibold" %>
+          </li>
+        <% end %>
+      </ul>
+    </nav>
+  </header>
+</div>
