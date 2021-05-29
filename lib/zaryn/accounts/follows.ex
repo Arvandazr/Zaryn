@@ -1,5 +1,5 @@
 defmodule Zaryn.Accounts.Follows do
-  use Ecto.Schema
+  use Zaryn.Schema
 
   alias Zaryn.Accounts.User
 

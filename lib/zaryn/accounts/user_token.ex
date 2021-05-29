@@ -1,5 +1,5 @@
 defmodule Zaryn.Accounts.UserToken do
-  use Ecto.Schema
+  use Zaryn.Schema
   import Ecto.Query
 
   @hash_algorithm :sha256

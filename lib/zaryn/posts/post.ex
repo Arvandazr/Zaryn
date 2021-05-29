@@ -1,5 +1,5 @@
 defmodule Zaryn.Posts.Post do
-  use Ecto.Schema
+  use Zaryn.Schema
   import Ecto.Changeset
 
   schema "posts" do
