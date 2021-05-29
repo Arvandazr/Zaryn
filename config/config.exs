@@ -8,7 +8,10 @@
 use Mix.Config
 
 config :zaryn,
-  ecto_repos: [Zaryn.Repo]
+  ecto_repos: [Zaryn.Repo],
+  generators: [binary_id: true],
+  migration_foreign_key: [column: :id, type: :uuid],
+  migration_primary_key: [name: :id, type: :uuid]
 
 # Configures the endpoint
 config :zaryn, ZarynWeb.Endpoint,
