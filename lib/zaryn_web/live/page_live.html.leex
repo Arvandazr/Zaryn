@@ -23,7 +23,7 @@
               <%= live_redirect @current_user.username,
                 to: Routes.user_profile_path(@socket, :index, @current_user.username),
                 class: "truncate font-bold text-sm text-gray-500 hover:underline" %>
-              <h2 class="text-sm text-gray-500"><%= @current_user.full_name %></h2>
+              <h2 class="text-sm text-gray-500">Kendrix-ID: <%= @current_user.id %></h2>
             </div>
             <!-- End post header section -->
           </div>

@@ -1,5 +1,5 @@
 defmodule Zaryn.Accounts.User do
-  use Ecto.Schema
+  use Zaryn.Schema
   import Ecto.Changeset
 
   alias Zaryn.Accounts.Follows

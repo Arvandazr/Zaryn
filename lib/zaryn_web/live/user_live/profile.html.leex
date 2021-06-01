@@ -61,6 +61,7 @@
 
     <div class="p-3">
       <h2 class="text-md text-gray-600 font-bold"><%= @user.full_name %></h2>
+      <h2 class="text-md text-gray-600 font-bold">Kendrix-ID: <%= @user.id %></h2>
       <%= if @user.bio do %>
         <p class="max-w-full break-words"><%= @user.bio %></p>
       <% end %>

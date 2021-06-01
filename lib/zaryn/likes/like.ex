@@ -1,5 +1,5 @@
 defmodule Zaryn.Likes.Like do
-  use Ecto.Schema
+  use Zaryn.Schema
 
   schema "likes" do
     field :liked_id, :integer

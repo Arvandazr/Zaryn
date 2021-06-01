@@ -1,5 +1,5 @@
 defmodule Zaryn.Comments.Comment do
-  use Ecto.Schema
+  use Zaryn.Schema
   import Ecto.Changeset
 
   schema "comments" do
